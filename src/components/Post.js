@@ -5,8 +5,8 @@ import './Post.css';
 class Post extends React.Component {
 
   renderBody() {
-    return this.props.paragraphs.map((paragraph) =>
-      (<div className="Paragraph">{paragraph}</div>)
+    return this.props.paragraphs.map((paragraph, i) =>
+      (<div key={i} className="Paragraph">{paragraph}</div>)
     )
   }
 
