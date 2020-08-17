@@ -9,7 +9,7 @@ class App extends React.Component {
 
   renderPosts() {
     return this.posts.map((post) =>
-      (<PostLink key={post} text={post} href={`#/writing/${post.replace(/\./g,"")}`} />)
+      (<PostLink key={post} text={post} to={`/${post.replace(/\./g,"")}`} />)
     )
   }
 

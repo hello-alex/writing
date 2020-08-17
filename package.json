@@ -1,6 +1,6 @@
 {
   "name": "writing",
-  "homepage": "https://hello-alex.github.io/writing",
+  "homepage": "https://hello-alex.github.io/writing/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

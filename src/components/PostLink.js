@@ -1,17 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class PostLink extends React.Component {
 
   render() {
     return (
       <div style={this.containerStyle}>
-        <a
+        <Link
           style={this.style}
-          href={this.props.href}
+          to={this.props.to}
           target={this.props.openInNewTab ? "_blank" : ""}
           rel="noopener noreferrer">
           {this.props.text}
-        </a>
+        </Link>
       </div>
     )
   }
