@@ -17,7 +17,7 @@ class Post extends React.Component {
         <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet"></link>
         <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet"></link>
 
-        <a className="Title" href="/">
+        <a className="Title" href="#/writing">
           {this.props.title}
         </a>
         <div className="Subtitle">
