@@ -61,18 +61,16 @@ class Post extends React.Component {
     let url = await firebase.storage().ref().child(`posts/${filename}.txt`).getDownloadURL()
 
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
+    xhr.responseType = 'text';
     var self = this;
     xhr.onload = function (event) {
-      var blob = xhr.response;
-      self.processFile(blob);
+      self.processFile(xhr.response);
     };
     xhr.open('GET', url);
     xhr.send();
   }
 
-  async processFile(blob) {
-    let text = await blob.text();
+  processFile(text) {
     let lines = text.split('\n');
     this.setState({
       ...this.state,
