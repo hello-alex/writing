@@ -23,13 +23,6 @@ class AppRouter extends React.Component {
     this.fetchPosts();
   }
 
-  async getPassword() {
-    let db = firebase.firestore();
-    let querySnapshot = await db.collection("passwords").where("password", "==", "airbnb").get()
-    console.log(querySnapshot.empty);
-    querySnapshot.docs.map((doc) => console.log(doc.id, " => ", doc.data()));
-  }
-
   async fetchPosts() {
     let listResult = await firebase.storage().ref().child('posts').listAll();
     let posts = listResult.items.map((item) => this.removeFileExtension(item.name))
@@ -46,7 +39,7 @@ class AppRouter extends React.Component {
   routePosts() {
     return this.state.posts.map((post) => {
       return (
-        <Route key={post} path={`/${post.replace(/\./g, "")}`}>
+        <Route key={post} path={`/${post.replace(/\.|\(|\)| /g, "")}`}>
           <Post title={post} />
         </Route>
       )

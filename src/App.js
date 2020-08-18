@@ -9,7 +9,7 @@ class App extends React.Component {
     let posts = this.props.posts;
     posts.sort().reverse();
     return posts.map((post) =>
-      (<PostLink key={post} text={post} to={`/${post.replace(/\./g, "")}`} />)
+      (<PostLink key={post} text={post} to={`/${post.replace(/\.|\(|\)| /g, "")}`} />)
     )
   }
 
