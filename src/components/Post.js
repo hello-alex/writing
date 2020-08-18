@@ -18,16 +18,33 @@ class Post extends React.Component {
 
   async componentDidMount() {
     if (await this.passwordRequired()) {
-      console.log("password required");
+      let authenticated = await this.authenticate();
+      if (!authenticated) {
+        alert("Bye");
+        return;
+      }
     }
     this.downloadFile(this.props.title);
   }
 
-  async getPassword() {
+  async authenticate() {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      let authenticated = await this.tryPassword(attempt);
+      if (authenticated) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async tryPassword(attempt) {
+    let password = window.prompt(attempt === 0 ? "Password:" : "Wrong, try again?");
     let db = firebase.firestore();
-    let querySnapshot = await db.collection("passwords").where("password", "==", "airbnb").get()
-    console.log(querySnapshot.empty);
-    querySnapshot.docs.map((doc) => console.log(doc.id, " => ", doc.data()));
+    let querySnapshot = await db.collection("passwords").where("password", "==", password).get()
+    if (querySnapshot.empty) {
+      return false;
+    }
+    return querySnapshot.docs[0].data().post === this.props.title;
   }
 
   async passwordRequired() {
