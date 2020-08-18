@@ -48,16 +48,16 @@ class Post extends React.Component {
     if (querySnapshot.empty) {
       return false;
     }
-    return querySnapshot.docs[0].data().post === this.props.title;
+    return true;
   }
 
   async passwordRequired() {
     let querySnapshot =
       await firebase.firestore().collection("posts").where("name", "==", this.props.title).get();
     if (querySnapshot.empty) {
-      return false;
+      return true;
     }
-    return querySnapshot.docs[0].data().passwordRequired || false;
+    return false;
   }
 
   async downloadFile(filename) {
