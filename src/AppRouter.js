@@ -6,27 +6,55 @@ import {
 } from "react-router-dom";
 import Post from './components/Post';
 import App from './App';
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
+import 'firebase/firestore';
 
 class AppRouter extends React.Component {
 
-  posts = require('./posts/registry.json').posts;
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: []
+    }
+  }
+
+  componentDidMount() {
+    this.fetchPosts();
+  }
+
+  async getPassword() {
+    let db = firebase.firestore();
+    let querySnapshot = await db.collection("passwords").where("password", "==", "airbnb").get()
+    console.log(querySnapshot.empty);
+    querySnapshot.docs.map((doc) => console.log(doc.id, " => ", doc.data()));
+  }
+
+  async fetchPosts() {
+    let listResult = await firebase.storage().ref().child('posts').listAll();
+    let posts = listResult.items.map((item) => this.removeFileExtension(item.name))
+    this.setState({
+      ...this.state,
+      posts,
+    });
+  }
+
+  removeFileExtension(filename) {
+    return filename.split('.').slice(0, -1).join('.');
+  }
 
   routePosts() {
-    return this.posts.map((post) => {
-      let postJson = require(`./posts/${post}.json`)
+    return this.state.posts.map((post) => {
       return (
         <Route key={post} path={`/${post.replace(/\./g, "")}`}>
-          <Post
-            title={postJson.title}
-            subtitle={postJson.subtitle}
-            paragraphs={postJson.paragraphs}
-          />
+          <Post title={post} />
         </Route>
       )
     })
   }
 
   render() {
+    let { posts } = this.state;
     return (
       <Router>
         <div>
@@ -37,7 +65,7 @@ class AppRouter extends React.Component {
                 <Post title="Title" subtitle="Subtitle" paragraphs={[]} />
               </Route>,
               <Route path="/" key="/">
-                <App />
+                <App posts={posts} />
               </Route>,
             ]}
           </Switch>
