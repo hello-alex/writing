@@ -40,6 +40,9 @@ class Post extends React.Component {
 
   async tryPassword(attempt) {
     let plaintext = window.prompt(attempt === 0 ? "Password:" : "Wrong, try again?");
+    if (!plaintext) {
+      return false;
+    }
     let ciphertext = md5(plaintext.trim().toLowerCase() + "salt");
     let querySnapshot = await firebase.firestore().collection("passwords").where("password", "==", ciphertext).get()
     if (querySnapshot.empty) {
