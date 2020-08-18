@@ -4,6 +4,7 @@ import './Post.css';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
+import md5 from '../utils/md5';
 
 class Post extends React.Component {
 
@@ -20,7 +21,7 @@ class Post extends React.Component {
     if (await this.passwordRequired()) {
       let authenticated = await this.authenticate();
       if (!authenticated) {
-        alert("Bye");
+        alert("Still wrong, bye.");
         return;
       }
     }
@@ -28,7 +29,7 @@ class Post extends React.Component {
   }
 
   async authenticate() {
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 2; attempt++) {
       let authenticated = await this.tryPassword(attempt);
       if (authenticated) {
         return true;
@@ -38,9 +39,9 @@ class Post extends React.Component {
   }
 
   async tryPassword(attempt) {
-    let password = window.prompt(attempt === 0 ? "Password:" : "Wrong, try again?");
-    let db = firebase.firestore();
-    let querySnapshot = await db.collection("passwords").where("password", "==", password).get()
+    let plaintext = window.prompt(attempt === 0 ? "Password:" : "Wrong, try again?");
+    let ciphertext = md5(plaintext + "salt");
+    let querySnapshot = await firebase.firestore().collection("passwords").where("password", "==", ciphertext).get()
     if (querySnapshot.empty) {
       return false;
     }

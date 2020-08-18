@@ -6,7 +6,9 @@ import Container from './components/Container';
 class App extends React.Component {
 
   renderPosts() {
-    return this.props.posts.map((post) =>
+    let posts = this.props.posts;
+    posts.sort().reverse();
+    return posts.map((post) =>
       (<PostLink key={post} text={post} to={`/${post.replace(/\./g, "")}`} />)
     )
   }
