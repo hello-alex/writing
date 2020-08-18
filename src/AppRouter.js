@@ -15,7 +15,7 @@ class AppRouter extends React.Component {
     return this.posts.map((post) => {
       let postJson = require(`./posts/${post}.json`)
       return (
-        <Route key={post} path={`/${post.replace(/\./g,"")}`}>
+        <Route key={post} path={`/${post.replace(/\./g, "")}`}>
           <Post
             title={postJson.title}
             subtitle={postJson.subtitle}
