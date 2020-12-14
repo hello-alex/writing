@@ -52,12 +52,13 @@ class Post extends React.Component {
   }
 
   async passwordRequired() {
-    let querySnapshot =
-      await firebase.firestore().collection("posts").where("name", "==", this.props.title).get();
-    if (querySnapshot.empty) {
-      return true;
-    }
     return false;
+//     let querySnapshot =
+//       await firebase.firestore().collection("posts").where("name", "==", this.props.title).get();
+//     if (querySnapshot.empty) {
+//       return true;
+//     }
+//     return false;
   }
 
   async downloadFile(filename) {
